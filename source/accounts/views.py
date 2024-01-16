@@ -6,14 +6,13 @@ from typing import Any
 from django.shortcuts import redirect
 from django.urls import reverse
 from django.http import HttpResponseRedirect
-
-
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 def logout_view(request):
     logout(request)
     return redirect('feed')
 
-class UserRegisterView(CreateView):
+class UserRegisterView(LoginRequiredMixin, CreateView):
     model = Profile
     template_name = 'accounts/sign_up.html'
     form_class = NewUserForm
@@ -31,7 +30,8 @@ class UserRegisterView(CreateView):
             next_url = reverse('feed')
         return next_url
     
-class UserProfile(DetailView):
+class UserProfile(LoginRequiredMixin, DetailView):
+    login_url = 'accounts:log_in'
     template_name = 'accounts/profile_page.html'
     model = Profile
     context_object_name = 'profile_obj'
@@ -46,11 +46,9 @@ def subscribe_view(request, profile_pk):
     print(request.POST)
     return HttpResponseRedirect(reverse('accounts:profile', args=[str(profile_pk)]))
 
-class SearchResultsView(ListView):
-    model = Profile
-    template_name = "search_results.html"
 
-class UserProfileEdit(UpdateView):
+class UserProfileEdit(LoginRequiredMixin, UpdateView):
+    login_url = 'accounts:log_in'
     model = Profile
     form_class = UserEditForm
     template_name = 'accounts/edit_profile.html'

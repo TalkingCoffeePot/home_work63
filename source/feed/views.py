@@ -11,7 +11,8 @@ from django.views.generic.edit import FormMixin
 from django.db.models import Q
 # Create your views here.
 
-class SearchResultsView(ListView):
+class SearchResultsView(LoginRequiredMixin, ListView):
+    login_url = 'accounts:log_in'
     model = Profile
     template_name = "search_results.html"
 
@@ -43,7 +44,8 @@ class FeedView(LoginRequiredMixin, ListView):
         return context
 
 
-class PostCreateView(CreateView):
+class PostCreateView(LoginRequiredMixin, CreateView):
+    login_url = 'accounts:log_in'
     template_name = 'content/new_post.html'
     form_class = PostForm
     model = PostModel
@@ -78,7 +80,8 @@ def post_like_view(request, post_pk):
     print(request.POST)
     return HttpResponseRedirect(reverse('feed'))
 
-class PostDetailedView(FormMixin, DetailView):
+class PostDetailedView(LoginRequiredMixin, FormMixin, DetailView):
+    login_url = 'accounts:log_in'
     template_name = 'detailed_post.html'
     model = PostModel
     form_class = CommentForm

@@ -14,7 +14,7 @@
                             <h3>{{profile_obj.username}}</h3>
                             <a href="{% url 'accounts:edit_profile' profile_obj.pk %}" class="btn btn-secondary ms-5">Редактирование</a>
                         </div>
-                        
+                        {% if request.user != profile_obj %}
                         <form method='post' action="{% url 'accounts:profile_sub' profile_obj.pk %}">
                             {% csrf_token %}
                             <button class="btn" type="submit" name="profile_id", value="{{profile_obj.pk}}">
@@ -25,8 +25,9 @@
                               {% endif %}
                             </button>
                           </form>
+                        {% endif %}
                     </div>
-                    <div class="counts">
+                    <div class="counts mt-3">
                         <span>{{profile_obj.usr_posts.all.count}} Публикаций</span>
                         <span>{{profile_obj.subs.all.count}} Подписки</span>
                         <span>{{profile_obj.my_subs.all.count}} Подписчики</span>
@@ -37,7 +38,7 @@
                     </div>
                 </div>
             </div>
-            <div class="posts d-flex flex-row">
+            <div class="posts d-flex flex-row mt-3">
                 {% for post in profile_obj.usr_posts.all %}
                 <div class="card m-3 justify-content-center" style="width: 18rem;">
                     <a href="{% url 'accounts:detailed_post' user.pk post.pk %}"><img src="{{post.image.url}}" class="card-img-top" style="width: 100%; object-fit: contain;"></a>
