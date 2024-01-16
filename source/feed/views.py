@@ -8,9 +8,22 @@ from feed.forms import CommentForm, PostForm
 from feed.models import PostModel
 from accounts.models import Profile
 from django.views.generic.edit import FormMixin, FormView
+from django.db.models import Q
 # Create your views here.
 
+class SearchResultsView(ListView):
+    model = Profile
+    template_name = "search_results.html"
 
+    def get_queryset(self):
+        query = self.request.GET.get("q")
+        this_objects = Profile.objects.filter(
+            Q(username__icontains=query) | 
+            Q(first_name__icontains=query) | 
+            Q(email__icontains=query)
+        )
+        return this_objects
+    
 class FeedView(LoginRequiredMixin, ListView):
     login_url = 'accounts:log_in'
     template_name = 'feed.html'
@@ -20,7 +33,7 @@ class FeedView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         context =  super().get_context_data(**kwargs)
-        context['post_obj'] = PostModel.objects.all()
+        context['post_obj'] = PostModel.objects.all().order_by('date_add').values()
 
 
 class PostCreateView(CreateView):

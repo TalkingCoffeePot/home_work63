@@ -1,12 +1,13 @@
 from django.shortcuts import render
 from django.contrib.auth import login, authenticate, logout
-from django.views.generic import CreateView, DetailView
+from django.views.generic import CreateView, DetailView, ListView
 from accounts.models import Profile
 from accounts.forms import NewUserForm, UserEditForm
 from typing import Any
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
+from django.db.models import Q
 
 
 def logout_view(request):
@@ -45,3 +46,9 @@ def subscribe_view(request, profile_pk):
         request.user.subs.add(profile_obj)
     print(request.POST)
     return HttpResponseRedirect(reverse('accounts:profile', args=[str(profile_pk)]))
+
+class SearchResultsView(ListView):
+    model = Profile
+    template_name = "search_results.html"
+
+    

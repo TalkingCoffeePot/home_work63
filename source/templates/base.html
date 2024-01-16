@@ -13,18 +13,18 @@
 <body style="background-color:rgb(230, 229, 227) !important;">
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="collapse navbar-collapse row justify-content-between">
-            <div class="col-4 d-flex flex-row">
+            <div class="col-3 d-flex flex-row">
                 <div class="col-2 text-center">
                     <a href="{% url 'feed' %}" class="link-dark">
                         <i class="bi bi-instagram dark fs-2"></i>
                     </a>
                 </div>
-                <div class="col-8"><img class="img-fluid" src="{% static 'images/title2.png' %}" alt="" width="180px"></div>
+                <div class="col-6"><img class="img-fluid" src="{% static 'images/title2.png' %}" alt="" width="180px"></div>
             </div>
             {% if user.is_authenticated %}
             <div class="col-4">
-                <form action="post">
-                    <input type="text">
+                <form action="{% url 'search_results' %}" method="get">
+                    <input name="q" class="input_box" type="text" placeholder="Поиск" style="width: 70%; border: 2px solid rgb(230, 229, 227);border-radius:5px">
                 </form>
             </div>
                 <div class="col-2 text-center">

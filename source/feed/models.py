@@ -7,6 +7,7 @@ class PostModel(models.Model):
     user = models.ForeignKey(Profile, verbose_name='Пользователь', related_name='usr_posts', on_delete=models.CASCADE)
     text = models.TextField('Текст публикации', max_length=1000)
     likes = models.ManyToManyField(Profile, related_name='user_likes', blank=True)
+    date_add = models.DateField('Дата публикации', auto_now_add=True)
     
 
 class CommentModel(models.Model):
