@@ -12,7 +12,7 @@ def logout_view(request):
     logout(request)
     return redirect('feed')
 
-class UserRegisterView(LoginRequiredMixin, CreateView):
+class UserRegisterView(CreateView):
     model = Profile
     template_name = 'accounts/sign_up.html'
     form_class = NewUserForm
