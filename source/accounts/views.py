@@ -1,13 +1,12 @@
-from django.shortcuts import render
-from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth import login, logout
 from django.views.generic import CreateView, DetailView, ListView, UpdateView
 from accounts.models import Profile
 from accounts.forms import NewUserForm, UserEditForm
 from typing import Any
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect
 from django.urls import reverse
-from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
-from django.db.models import Q
+from django.http import HttpResponseRedirect
+
 
 
 def logout_view(request):

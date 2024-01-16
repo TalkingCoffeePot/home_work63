@@ -1,6 +1,5 @@
 from django.db import models
 from accounts.models import Profile
-from django.db.models import Count
 
 class PostModel(models.Model):
     image = models.ImageField('Картинка', upload_to='post_images')

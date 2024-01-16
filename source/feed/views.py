@@ -1,13 +1,13 @@
 from typing import Any
-from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
-from django.shortcuts import render, redirect
+from django.http import HttpResponseRedirect
+from django.shortcuts import redirect
 from django.urls import reverse, reverse_lazy
-from django.views.generic import TemplateView, ListView, DetailView, CreateView
+from django.views.generic import ListView, DetailView, CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from feed.forms import CommentForm, PostForm
 from feed.models import PostModel
 from accounts.models import Profile
-from django.views.generic.edit import FormMixin, FormView
+from django.views.generic.edit import FormMixin
 from django.db.models import Q
 # Create your views here.
 

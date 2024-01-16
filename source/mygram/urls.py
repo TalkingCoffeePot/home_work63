@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from feed.views import FeedView, PostCreateView, post_like_view, PostDetailedView, SearchResultsView
+from feed.views import FeedView, post_like_view, PostDetailedView, SearchResultsView
 from accounts.views import UserRegisterView
 from django.conf import settings
 from django.conf.urls.static import static
