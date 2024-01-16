@@ -15,6 +15,12 @@ class SearchResultsView(ListView):
     model = Profile
     template_name = "search_results.html"
 
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        context =  super().get_context_data(**kwargs)
+        context['this_objects'] = self.get_queryset()
+        print(context['this_objects'])
+        return context
+    
     def get_queryset(self):
         query = self.request.GET.get("q")
         this_objects = Profile.objects.filter(
@@ -33,7 +39,8 @@ class FeedView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         context =  super().get_context_data(**kwargs)
-        context['post_obj'] = PostModel.objects.all().order_by('date_add').values()
+        context['post_obj'] = PostModel.objects.all().order_by('date_add')
+        return context
 
 
 class PostCreateView(CreateView):

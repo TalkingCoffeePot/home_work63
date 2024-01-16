@@ -16,8 +16,9 @@ body {
 .input_box {
     border: 0;
     width: 100%;
-    color:rgb(230, 229, 227)
+    color: black;
 }
+
 .form_control textarea {
     height: 100px;
 }

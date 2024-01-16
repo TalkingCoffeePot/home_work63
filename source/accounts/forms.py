@@ -38,5 +38,12 @@ class UserEditForm(UserChangeForm):
             'first_name', 'avatar', 'email', 
             'info', 'number', 'sex'
         ]
+        widgets = {
+            'first_name' : forms.TextInput(attrs={'placeholder': 'Имя', 'class': 'input_box'}),
+            'email' : forms.EmailInput(attrs={'placeholder': 'Электронная почта', 'class': 'input_box'}),
+            'info' : forms.Textarea(attrs={'placeholder': 'О себе', 'class': 'input_box text_box'}),
+            'number' : forms.NumberInput(attrs={'placeholder': 'Номер телефона', 'class': 'input_box'}),
+            'sex' : forms.RadioSelect(attrs={'placeholder': 'Пол', 'class': 'input_box d-flex flex-row justify-content-around'}),
+        }
 
         

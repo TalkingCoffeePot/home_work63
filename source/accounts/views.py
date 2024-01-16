@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.contrib.auth import login, authenticate, logout
-from django.views.generic import CreateView, DetailView, ListView
+from django.views.generic import CreateView, DetailView, ListView, UpdateView
 from accounts.models import Profile
 from accounts.forms import NewUserForm, UserEditForm
 from typing import Any
@@ -51,4 +51,18 @@ class SearchResultsView(ListView):
     model = Profile
     template_name = "search_results.html"
 
+class UserProfileEdit(UpdateView):
+    model = Profile
+    form_class = UserEditForm
+    template_name = 'accounts/edit_profile.html'
+    pk_url_kwarg = 'profile_pk'
+    context_object_name = 'profile_obj'
+
+    def get_success_url(self, **kwargs):
+        return reverse('accounts:profile', kwargs={'profile_pk': self.request.user.pk})
+    
+    def get_context_data(self, **kwargs):
+        kwargs['profile_obj'] = self.get_object()
+        kwargs['form'] = self.get_form()
+        return super().get_context_data(**kwargs)
     

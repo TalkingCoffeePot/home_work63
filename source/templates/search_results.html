@@ -4,14 +4,19 @@
 {% block content %}
 <div class="user_feed">
     {% for profile_obj in this_objects %}
+    {% if profile_obj != request.user %}
     <div class="container mt-5">
         <div class="usr_info d-flex flex-row justify-content-around" style="width: 50%;">
             <div class="usr_avatar" style="width: 20%;">
-                <img class="user_avatar" src="{{profile_obj.avatar.url}}" style="width: 100%;" alt="">
+                <a href="{% url 'accounts:profile' profile_obj.pk %}">
+                    <img class="user_avatar" src="{{profile_obj.avatar.url}}" style="width: 100%;" alt="">
+                </a>
             </div>
             <div class="text_info">
                 <div class="usr_name">
-                    <h3>{{profile_obj.username}}</h3>
+                    <a href="{% url 'accounts:profile' profile_obj.pk %}" class="text-dark" style="text-decoration: none;">
+                        <h3>{{profile_obj.username}}</h3>
+                    </a>
                     <form method='post' action="{% url 'accounts:profile_sub' profile_obj.pk %}">
                         {% csrf_token %}
                         <button class="btn" type="submit" name="profile_id", value="{{profile_obj.pk}}">
@@ -34,6 +39,7 @@
             </div>
         </div>
     </div>
+    {% endif %}
     {% endfor %}
 </div>
 {% endblock %}
