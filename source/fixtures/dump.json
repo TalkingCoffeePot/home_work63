@@ -1,0 +1,51 @@
+[
+{
+  "model": "feed.postmodel",
+  "pk": 1,
+  "fields": {
+    "image": "post_images/r34r34rrtt444_1_kTyEIJf.png",
+    "user": [
+      "root"
+    ],
+    "text": "fgfdsgsdgsdf",
+    "likes": []
+  }
+},
+{
+  "model": "feed.postmodel",
+  "pk": 2,
+  "fields": {
+    "image": "post_images/poco.png",
+    "user": [
+      "root"
+    ],
+    "text": "dsdsadsda",
+    "likes": []
+  }
+},
+{
+  "model": "feed.postmodel",
+  "pk": 3,
+  "fields": {
+    "image": "post_images/rtx4060.jpg",
+    "user": [
+      "dwadawdw"
+    ],
+    "text": "Мечта",
+    "likes": []
+  }
+},
+{
+  "model": "feed.commentmodel",
+  "pk": 1,
+  "fields": {
+    "author": [
+      "root"
+    ],
+    "post_model": 3,
+    "text": "fsdafsafsdfsdgas",
+    "date_add": "2024-01-16",
+    "date_edit": "2024-01-16"
+  }
+}
+]

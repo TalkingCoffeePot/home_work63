@@ -4,7 +4,9 @@
 {% block content %}
 <div class="user_feed">
     {% for post in post_obj %}
-        {% include 'partial/posts_form.html' %}
+        {% if post.user in request.user.subs.all %}
+            {% include 'partial/posts_form.html' %}
+        {% endif %}
     {% endfor %}
 </div>
 {% endblock %}

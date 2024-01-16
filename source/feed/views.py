@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse, reverse_lazy
 from django.views.generic import TemplateView, ListView, DetailView, CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from feed.forms import CommentModel, PostForm
+from feed.forms import CommentForm, PostForm
 from feed.models import PostModel
 from accounts.models import Profile
 from django.views.generic.edit import FormMixin, FormView
@@ -17,8 +17,11 @@ class FeedView(LoginRequiredMixin, ListView):
     context_object_name = 'post_obj'
     model = PostModel
 
+
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
-        return super().get_context_data(**kwargs)
+        context =  super().get_context_data(**kwargs)
+        context['post_obj'] = PostModel.objects.all()
+
 
 class PostCreateView(CreateView):
     template_name = 'content/new_post.html'
@@ -52,7 +55,31 @@ def post_like_view(request, post_pk):
         post.likes.remove(request.user)
     else:
         post.likes.add(request.user)
+    print(request.POST)
     return HttpResponseRedirect(reverse('feed'))
+
+class PostDetailedView(FormMixin, DetailView):
+    template_name = 'detailed_post.html'
+    model = PostModel
+    form_class = CommentForm
+    context_object_name = 'post'
+    pk_url_kwarg = 'post_pk'
+
+    def get_success_url(self, **kwargs) -> str:
+        return reverse_lazy('feed')
+
+    def post(self, request, *args, **kwargs):
+        form = self.get_form()
+        if form.is_valid():
+            return self.form_valid(form)
+        
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.author = self.request.user
+        self.object.post_model = self.get_object()
+        self.object.save()
+        return super().form_valid(form)
+
 
 
 

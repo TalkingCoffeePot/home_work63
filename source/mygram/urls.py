@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from feed.views import FeedView, PostCreateView, post_like_view
+from feed.views import FeedView, PostCreateView, post_like_view, PostDetailedView
 from accounts.views import UserRegisterView
 from django.conf import settings
 from django.conf.urls.static import static
@@ -26,5 +26,6 @@ urlpatterns = [
     path('accounts/', include('accounts.urls')),
     path('', FeedView.as_view(), name='feed'),
     path('sign_up/', UserRegisterView.as_view()),
-    path('like/<int:post_pk>/', post_like_view, name='like_post')
+    path('like/<int:post_pk>/', post_like_view, name='like_post'),
+    path('feed/<int:post_pk>/', PostDetailedView.as_view(), name='feed_post')
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -6,6 +6,7 @@ from accounts.forms import NewUserForm, UserEditForm
 from typing import Any
 from django.shortcuts import render, redirect
 from django.urls import reverse
+from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 
 
 def logout_view(request):
@@ -36,3 +37,11 @@ class UserProfile(DetailView):
     context_object_name = 'profile_obj'
     pk_url_kwarg = 'profile_pk'
 
+def subscribe_view(request, profile_pk):
+    profile_obj = Profile.objects.get(id=request.POST.get('profile_id'))
+    if request.user.subs.filter(id=profile_obj.id).exists():
+        request.user.subs.remove(profile_obj)
+    else:
+        request.user.subs.add(profile_obj)
+    print(request.POST)
+    return HttpResponseRedirect(reverse('accounts:profile', args=[str(profile_pk)]))

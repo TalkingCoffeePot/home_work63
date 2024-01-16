@@ -14,17 +14,16 @@ class PostForm(ModelForm):
             'text' : forms.Textarea(attrs={'placeholder': 'Описание', 'class': 'input_box text_box'}),
         }
 
-class ReviewForm(ModelForm):
+class CommentForm(ModelForm):
     class Meta:
         model = CommentModel
         fields = [
-            'author',
-            'post_model',
             'text'
         ]
         widgets = {
             'text': Textarea(attrs={
                 'class': 'form-control',
-                'placeholder': 'Оставьте комментарий'
+                'placeholder': 'Оставьте комментарий',
+                'style': "height: 150px"
             })
         }

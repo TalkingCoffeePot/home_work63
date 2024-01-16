@@ -1,9 +1,8 @@
 html {
     height: 100vh;
 }
-.background {
-    background-color:burlywood;
-    background-size: cover;
+body {
+    background-color:blanchedalmond !important;
 }
 .card_form {
     width: 40%;
@@ -40,8 +39,9 @@ html {
     }
   }
 
-
-
+img.user_avatar {
+    border-radius: 50%;
+}
 .usr_feed {
     background-color:burlywood;
     background-size: cover;

@@ -1,14 +1,19 @@
 
-  <div class="card mt-3" style="width: 70%; margin: auto">
+  <div class="card mt-3 mb-3" style="width: 70%; margin: auto">
     <div class="card-body row">
       <div class="col-2">
-        <img src="{{post.user.avatar.url}}" width="100%" alt="">
+        <a href="{% url 'accounts:profile' post.user.pk %}"><img style="border-radius: 50%;" src="{{post.user.avatar.url}}" width="100%" alt=""></a>
       </div>
       <div class="col-2">
-        <h5 class="card-title">{{post.user}}</h5>
+        <a href="{% url 'accounts:profile' post.user.pk %}" class="text-dark" style="text-decoration: none;"><h5 class="card-title">{{post.user}}</h5></a>
       </div>
     </div>
-    <img src="{{post.image.url}}" class="card-img-top" style="width: 50%; margin: auto;">
+    <a href="{% url 'feed_post' post.pk %}" class="card-img-top">
+      <div class="justify-content-center d-flex">
+        <img src="{{post.image.url}}" >
+      </div>
+      
+    </a>
     <div class="card-body">
       <p class="card-text">{{post.text}}</p>
 
@@ -30,21 +35,4 @@
         </div>
       </div>
     
-      <h6 id="write_comment">Написать комментарий</h6>
-      <form method="post">
-          {% csrf_token %}
-          <div class="row">
-              <div class="col-10">
-                  {{form.text}}
-              </div>
-          </div>
-          <button type="submit" class="btn btn-primary mt-3 mb-3">Комментировать</button>
-      </form>
-      {% for comment in post.p_review.all %}
-        <div class="task_box">
-            <span class="fs-4 fw-medium"><a href="{% url 'accounts:profile' review.get_author.pk %}">{{comment.get_author}}</a></span>
-            <p>{{comment.text}}</p>
-        </div>
-      {% endfor %}
-    </div>
-  </div>
+      
