@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Main Page{% endblock %}
+{% block content %}
+        <div class="container mt-5">
+            <div class="usr_info">
+                <div class="usr_avatar">
+                    <img src="{{profile_obj.image.url}}" alt="">
+                </div>
+                <div class="text_info">
+                    <div class="usr_name">
+                        
+                    </div>
+                    <div class="counts">
+
+                    </div>
+                    <div class="usr_bio">
+
+                    </div>
+                </div>
+            </div>
+            <div class="posts">
+                {% for post in profile_obj.user_posts %}
+                    {% include 'partial/posts_form.html' %} 
+                {% endfor %}
+            </div>
+        </div>
+{% endblock %}

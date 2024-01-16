@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block style %}{% static 'css/style.css' %}{% endblock %}
+{% block content %}
+<form method="post">
+{% csrf_token %}    
+    <div class="card card_form">
+        <img src="{% static 'images/title2.png' %}" class="card-img-top" alt="...">
+        <div class="card-body">
+            <h5 class="card-title">Вход</h5> 
+            <div class="form-control">{{form.username}}</div>
+            <div class="form-control">{{form.password}}</div>
+            <button type="submit" class="btn btn-primary">Войти</button>
+            <a href="{% url 'accounts:register_user' %}" type="submit" class="btn btn-primary">Регистрация</a> 
+        </div>
+      </div>
+</form>
+{% endblock %}
