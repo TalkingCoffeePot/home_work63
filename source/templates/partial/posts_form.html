@@ -19,19 +19,17 @@
 
       <div class="like_section d-flex flex-row">
         <div class="col-1">
-          <form method='post' action="{% url 'like_post' post.pk %}">
             {% csrf_token %}
-            <button class="btn" type="submit" name="post_id", value="{{post.pk}}">
+            <button id='like' class="btn" type="submit" name="post_id", value="{{post.pk}}">
               {% if request.user in post.likes.all %}
                 <i class="bi bi-heart-fill text-danger fs-2"></i>
               {% else %}
                 <i class="bi bi-heart text-danger fs-2"></i>
               {% endif %}
             </button>
-          </form>
         </div>
         <div class="col-1">
-          <h6 id="write_comment" class="fs-1">{{post.likes.all.count}} {{post.is_liked}}</h6>
+          <h6 id="like_count" data-artId="{{post.pk}}" class="fs-1">{{post.likes.all.count}} {{post.is_liked}}</h6>
         </div>
       </div>
     

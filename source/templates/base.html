@@ -9,6 +9,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="{% block style %}{% endblock %}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="{% static 'js/likes.js' %}"></script>
 </head>
 <body style="background-color:rgb(230, 229, 227) !important;">
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
@@ -40,6 +42,33 @@
     <div class="container">
         <div class="background"></div>
         {% block content %}{% endblock %}
-    </div>   
+    </div>
+    {% if user.is_authenticated %}
+        <script type="text/javascript">
+            $(document).on('click', '#like', function(e){
+                const artId = $(this).val()
+                const btn = this
+                e.preventDefault();
+                $.ajax({
+                    headers: {"X-CSRFToken": '{{csrf_token}}'},
+                    type: 'POST',
+                    url: "{% url 'api_v1:post_like' %}",
+                    data: {
+                        postid: $(this).val(),
+                        csrfmiddlewaretoken: '{{ csrf_token }}',
+                        action: 'post'
+                    },
+                    success: function(json) {
+                        let c = `"${artId}"`
+                        btn.innerHTML = json['icon']
+                        let counter = document.querySelector(`[data-artId=${c}]`)
+                        counter.innerHTML = json['count']
+                    },
+                    error: function(xhr, errmsg, err){
+                    }
+                })
+            })
+        </script>
+    {% endif %}   
 </body>
 </html>

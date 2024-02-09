@@ -26,7 +26,7 @@ urlpatterns = [
     path('accounts/', include('accounts.urls')),
     path('', FeedView.as_view(), name='feed'),
     path('sign_up/', UserRegisterView.as_view()),
-    path('like/<int:post_pk>/', post_like_view, name='like_post'),
     path('feed/<int:post_pk>/', PostDetailedView.as_view(), name='feed_post'),
-    path('search_result/', SearchResultsView.as_view(), name='search_results')
+    path('search_result/', SearchResultsView.as_view(), name='search_results'),
+    path('api/', include('api_v1.urls'))
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -40,6 +40,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'feed',
     'accounts',
+    'api_v1',
+    'rest_framework',
+    'rest_framework.authtoken'
 ]
 
 MIDDLEWARE = [
@@ -69,6 +72,16 @@ TEMPLATES = [
         },
     },
 ]
+
+REST_FRAMEWORK = {
+
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+
+        'rest_framework.authentication.TokenAuthentication',
+
+    )
+
+}
 
 WSGI_APPLICATION = 'mygram.wsgi.application'
 
