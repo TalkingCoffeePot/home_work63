@@ -3,20 +3,22 @@ from django.shortcuts import render
 from api_v1.serializers import PostModelSerializer
 from feed.models import PostModel
 from django.http import JsonResponse
-from rest_framework.permissions import BasePermission
+from rest_framework.permissions import BasePermission, IsAuthenticated
 from django.views.decorators.csrf import csrf_exempt
+from rest_framework.views import APIView
+
+def find_post( id):
+    return PostModel.objects.get(id=id)
+
+def url_parse(str):
+    return int(str.split('/')[3])
+
 
 class IsAllowed(BasePermission):
-    def find_post(self, id):
-        return PostModel.objects.get(id=id)
-
-    def url_parse(self, str):
-        return int(str.split('/')[3])
-
     def has_permission(self, request, view):
         if request.user and request.user.is_authenticated:
             if view.action == 'partial_update' or view.action == 'destroy':
-                if self.find_post(self.url_parse(request.path)) in request.user.usr_posts.all():
+                if find_post(url_parse(request.path)) in request.user.usr_posts.all():
                     return True
                 else: return False
             else: return True
@@ -37,16 +39,22 @@ class PostViewSet(viewsets.ModelViewSet):
         serializer.save(user=self.request.user)
 
 
-@csrf_exempt
-def post_like_api(request):  
-    post = PostModel.objects.get(id=request.POST.get('postid'))
-    icon = ''
-    if post.likes.filter(id=request.user.id).exists():
-        post.likes.remove(request.user)
-        icon = '<i class="bi bi-heart text-danger fs-2"></i>'
-    else:
-        post.likes.add(request.user)
-        icon = '<i class="bi bi-heart-fill text-danger fs-2"></i>'
-    return JsonResponse({'count': post.likes.count(), 'icon': icon})
+class LikeView(APIView):
+    permission_classes = [IsAuthenticated]            # <-- And here
 
-
+    def post(self, request, *args, **kwargs):
+        if request.user.is_authenticated:  
+            post = find_post(url_parse(request.path))
+            icon = ''
+            try:
+                if post.likes.filter(id=request.user.id).exists():
+                    post.likes.remove(request.user)
+                    icon = '<i class="bi bi-heart text-danger fs-2"></i>'
+                else:
+                    post.likes.add(request.user)
+                    icon = '<i class="bi bi-heart-fill text-danger fs-2"></i>'
+                return JsonResponse({'count': post.likes.count(), 'icon': icon})
+            except:
+                return JsonResponse({'error': "who knows..."})
+        else:
+            return JsonResponse({'error': "not authorized"})

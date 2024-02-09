@@ -12,5 +12,5 @@ router.register(r'posts', views.PostViewSet)
 urlpatterns = [
     path('', include(router.urls)),
     path('login/', obtain_auth_token, name='api_token_auth'),
-    path('like/', views.post_like_api, name='api_like')
+    path('like/<int:like_pk>/', views.LikeView.as_view(), name='api_like')
 ]
