@@ -4,9 +4,9 @@ from api_v1.serializers import PostModelSerializer
 from feed.models import PostModel
 from django.http import JsonResponse
 from rest_framework.permissions import BasePermission
+from django.views.decorators.csrf import csrf_exempt
 
 class IsAllowed(BasePermission):
-
     def find_post(self, id):
         return PostModel.objects.get(id=id)
 
@@ -37,9 +37,9 @@ class PostViewSet(viewsets.ModelViewSet):
         serializer.save(user=self.request.user)
 
 
-def post_like_view(request):
+@csrf_exempt
+def post_like_api(request):  
     post = PostModel.objects.get(id=request.POST.get('postid'))
-    print(request.path)
     icon = ''
     if post.likes.filter(id=request.user.id).exists():
         post.likes.remove(request.user)
@@ -48,3 +48,5 @@ def post_like_view(request):
         post.likes.add(request.user)
         icon = '<i class="bi bi-heart-fill text-danger fs-2"></i>'
     return JsonResponse({'count': post.likes.count(), 'icon': icon})
+
+

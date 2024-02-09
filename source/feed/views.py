@@ -1,5 +1,4 @@
 from typing import Any
-from django.http import HttpResponseRedirect
 from django.shortcuts import redirect
 from django.urls import reverse, reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView
@@ -9,6 +8,7 @@ from feed.models import PostModel
 from accounts.models import Profile
 from django.views.generic.edit import FormMixin
 from django.db.models import Q
+from django.http import JsonResponse
 # Create your views here.
 
 class SearchResultsView(LoginRequiredMixin, ListView):
@@ -71,14 +71,17 @@ class PostCreateView(LoginRequiredMixin, CreateView):
         return redirect('feed')
  
 
-def post_like_view(request, post_pk):
-    post = PostModel.objects.get(id=request.POST.get('post_id'))
+def post_like_view(request):  
+    post = PostModel.objects.get(id=request.POST.get('postid'))
+    icon = ''
     if post.likes.filter(id=request.user.id).exists():
         post.likes.remove(request.user)
+        icon = '<i class="bi bi-heart text-danger fs-2"></i>'
     else:
         post.likes.add(request.user)
-    print(request.POST)
-    return HttpResponseRedirect(reverse('feed'))
+        icon = '<i class="bi bi-heart-fill text-danger fs-2"></i>'
+    return JsonResponse({'count': post.likes.count(), 'icon': icon})
+
 
 class PostDetailedView(LoginRequiredMixin, FormMixin, DetailView):
     login_url = 'accounts:log_in'

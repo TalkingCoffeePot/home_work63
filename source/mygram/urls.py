@@ -21,6 +21,7 @@ from accounts.views import UserRegisterView
 from django.conf import settings
 from django.conf.urls.static import static
 
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('accounts.urls')),
@@ -28,5 +29,6 @@ urlpatterns = [
     path('sign_up/', UserRegisterView.as_view()),
     path('feed/<int:post_pk>/', PostDetailedView.as_view(), name='feed_post'),
     path('search_result/', SearchResultsView.as_view(), name='search_results'),
+    path('likes/', post_like_view, name='post_likes'),
     path('api/', include('api_v1.urls'))
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
